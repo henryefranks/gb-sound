@@ -1,62 +1,73 @@
 ; HEADER.ASM
 ; cartridge header data
 
-SECTION	"Org $00",ROM0[$00]
+INCLUDE "header.inc"
+
+SECTION	"Org $00",ROM0[$0000]
   jp $100
 
-SECTION	"Org $08",ROM0[$08]
+SECTION	"Org $08",ROM0[$0008]
   jp $100
 
-SECTION	"Org $10",ROM0[$10]
+SECTION	"Org $10",ROM0[$0010]
   jp $100
 
-SECTION	"Org $18",ROM0[$18]
+SECTION	"Org $18",ROM0[$0018]
   jp $100
 
-SECTION	"Org $20",ROM0[$20]
+SECTION	"Org $20",ROM0[$0020]
   jp $100
 
-SECTION	"Org $28",ROM0[$28]
+SECTION	"Org $28",ROM0[$0028]
   jp $100
 
-SECTION	"Org $30",ROM0[$30]
+SECTION	"Org $30",ROM0[$0030]
   jp $100
 
-SECTION	"Org $38",ROM0[$38]
+SECTION	"Org $38",ROM0[$0038]
   jp $100
 
-SECTION	"V-Blank",ROM0[$40]
+SECTION	"V-Blank",ROM0[$0040]
   reti
 
-SECTION	"LCD",ROM0[$48]
+SECTION	"LCD",ROM0[$0048]
   reti
 
-SECTION	"Timer",ROM0[$50]
+SECTION	"Timer",ROM0[$0050]
   reti
 
-SECTION	"Serial",ROM0[$58]
+SECTION	"Serial",ROM0[$0058]
   reti
 
-SECTION	"Joypad",ROM0[$60]
+SECTION	"Joypad",ROM0[$0060]
   reti
 
-SECTION	"Start",ROM0[$100]
+SECTION	"Start",ROM0[$0100]
   nop
   jp START
-  DB  $CE,$ED,$66,$66,$CC,$0D,$00,$0B,$03,$73,$00,$83,$00,$0C,$00,$0D
-  DB  $00,$08,$11,$1F,$88,$89,$00,$0E,$DC,$CC,$6E,$E6,$DD,$DD,$D9,$99
-  DB  $BB,$BB,$67,$63,$6E,$0E,$EC,$CC,$DD,$DC,$99,$9F,$BB,$B9,$33,$3E
-  DB "SOUND",0,0,0,0,0,0
-  DB "    "
+
+SECTION	"Logo",ROM0[$0104]
+  NINTENDO_LOGO
+
+SECTION	"Title",ROM0[$0134]
+  DB "{TITLE}"
+
+SECTION	"Manufacturer",ROM0[$013F]
+  DB "{MANUFACTURER}"
+
+SECTION	"Flags",ROM0[$0143]
+  DB FLAG_CGB_DMG
+  DW $0000 ; licensee code - leave blank
+  DB FLAG_SGB_NONE
+  DB CART_ROM_ONLY
+  DB ROM_SIZE_32K
+  DB RAM_SIZE_NONE
+  DB REGION_WORLD
+  DB $33 ; use new licensee code
+  DB VERSION
+
+SECTION	"Header Checksum",ROM0[$014D]
   DB $00
-  DB $00
-  DB $00
-  DB $00
-  DB $00
-  DB $00
-  DB $00
-  DB $01
-  DB $33
-  DB $00
-  DB $00
+
+SECTION	"Global Checksum",ROM0[$014E]
   DW $00
