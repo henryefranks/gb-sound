@@ -7,18 +7,18 @@ SOUNDROM EQU $0300
 SECTION "Sound",ROM0
 INIT_SOUND::
   ld a, %01110111
-  ld [$FF24], a
+  ldh [$FF24], a
   ld a, %11111111
-  ld [$FF25], a
+  ldh [$FF25], a
   ld a, %10000000
-  ld [$FF26], a
+  ldh [$FF26], a
 
   ret
 
 LOAD_WAVEFORM_RAM::
   ; make sure CH3 is disabled before we load data
   ld a, $00
-  ld [$FF1A], a
+  ldh [$FF1A], a
 
   ld hl, WAVERAM
 
@@ -32,73 +32,73 @@ LOAD_WAVEFORM_RAM::
 
   ; re-enable CH3
   ld a, $80
-  ld [$FF1A], a
+  ldh [$FF1A], a
 
   ret
 
 SOUND_1::
   ld a, %00010110
-  ld [$FF10], a
+  ldh [$FF10], a
 
   ld a, %10000000
-  ld [$FF11], a
+  ldh [$FF11], a
 
   ld a, %01110000
-  ld [$FF12], a
+  ldh [$FF12], a
 
   ld a, %00000000
-  ld [$FF13], a
+  ldh [$FF13], a
 
   ld a, %11000011
-  ld [$FF14], a
+  ldh [$FF14], a
 
   ret
 
 SOUND_2::
   ld a, %10000000
-  ld [$FF16], a
+  ldh [$FF16], a
 
   ld a, %01110000
-  ld [$FF17], a
+  ldh [$FF17], a
 
   ld a, %00000000
-  ld [$FF18], a
+  ldh [$FF18], a
 
   ld a, %11000011
-  ld [$FF19], a
+  ldh [$FF19], a
 
   ret
 
 SOUND_3::
   ld a, %10000000
-  ld [$FF1A], a
+  ldh [$FF1A], a
 
   ld a, %00000000
-  ld [$FF1B], a
+  ldh [$FF1B], a
 
   ld a, %00100000
-  ld [$FF1C], a
+  ldh [$FF1C], a
 
   ld a, %00000000
-  ld [$FF1D], a
+  ldh [$FF1D], a
 
   ld a, %11000110
-  ld [$FF1E], a
+  ldh [$FF1E], a
 
   ret
 
 SOUND_3_INIT::
   ld a, %10000000
-  ld [$FF1A], a
+  ldh [$FF1A], a
   ld a, %00100000
-  ld [$FF1C], a
+  ldh [$FF1C], a
 
   call LOAD_WAVEFORM_RAM
   
   ret
 
 WAIT_FOR_CH3_FREE::
-  ld a, [$FF26]
+  ldh a, [$FF26]
   and $04
   jp nz, WAIT_FOR_CH3_FREE
   ret
@@ -111,12 +111,12 @@ SOUND_3_HL::
   ; i.e. hl+3
 
   ld a, [hli]
-  ld [$FF1B], a
+  ldh [$FF1B], a
   ld a, [hli]
-  ld [$FF1D], a
+  ldh [$FF1D], a
   ld a, [hli]
   or $C0
-  ld [$FF1E], a
+  ldh [$FF1E], a
   ret
   
 
