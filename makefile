@@ -1,56 +1,29 @@
-ifdef ComSpec
-	# Windows
-	RM = del /F /Q
-	RD = rmdir /S /Q
-	path = $(subst /,\\,$1)
-	htap = $(subst \\,/,$1)
-else
-	# GNU/Unix
-	RM = rm -f
-	RD = rm -rf
-	path = $1
-	htap = $1
-endif
-
 ASM    := rgbasm
 LINKER := rgblink
 FIX    := rgbfix
 
-ROMPATH := $(call path,ROMs/$(ROM)/)
-SRCPATH := $(call path,$(ROMPATH)src/)
-INCPATH := $(call path,$(ROMPATH)include/)
-BLDPATH := $(call path,$(ROMPATH)build/)
-OBJPATH := $(call path,$(BLDPATH)obj/)
-GB      := $(call path,$(BLDPATH)$(ROM).gb)
+SRCDIR := src
+INCDIR := include
 
-SRC := $(wildcard $(call htap,$(SRCPATH))*.asm)
+BLDDIR := build
+OBJDIR := $(BLDDIR)/obj
+GB     := $(BLDDIR)/sound.gb
 
-OBJ := $(addprefix $(OBJPATH), $(SRC:$(call htap,$(SRCPATH))%.asm=%.o))
+SRC := $(wildcard $(SRCDIR)/*.asm)
+OBJ := $(addprefix $(OBJDIR)/, $(SRC:$(SRCDIR)/%.asm=%.o))
 
 
 .PHONY: all clean
 
-all: setup fix
-
-setup:
-	mkdir -p $(OBJPATH)
-
-emu: fix
-	bgb $(GB)
-
-fix: build
-	$(FIX) -p0 -v $(GB)
-
-# TODO: I currently can't find a way to get directory
-#       creation to play nice on windows
-#       for now just create it manually if it doesn't exist
+all: build
 
 build: $(OBJ)
 	$(LINKER) $(OBJ) -o $(GB)
+	$(FIX) -p0 -v $(GB)
 
-$(OBJPATH)%.o: $(SRCPATH)%.asm
-	$(ASM) -i $(INCPATH) -o $@ $<
+$(OBJDIR)/%.o: $(SRCDIR)/%.asm
+	@ mkdir -p $(OBJDIR)
+	$(ASM) -i $(INCDIR) -o $@ $<
 
 clean:
-	$(RM) $(OBJPATH)
-	$(RM) $(BLDPATH)
+	@ $(RM) -r $(BLDDIR)/*
