@@ -9,8 +9,9 @@ BLDDIR := build
 OBJDIR := $(BLDDIR)/obj
 GB     := $(BLDDIR)/sound.gb
 
-SRC := $(wildcard $(SRCDIR)/*.asm)
+SRC := $(shell find $(SRCDIR) -name '*.asm' -print)
 OBJ := $(addprefix $(OBJDIR)/, $(SRC:$(SRCDIR)/%.asm=%.o))
+OBJDIRS := $(dir $(OBJ))
 
 
 .PHONY: all clean
@@ -22,7 +23,7 @@ build: $(OBJ)
 	$(FIX) -p0 -v $(GB)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.asm
-	@ mkdir -p $(OBJDIR)
+	@ mkdir -p $(OBJDIRS)
 	$(ASM) -i $(INCDIR) -o $@ $<
 
 clean:

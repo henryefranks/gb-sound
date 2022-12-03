@@ -1,8 +1,7 @@
 ; SOUND.ASM
 ; audio subroutines
 
-WAVERAM EQU $0400
-SOUNDROM EQU $0300
+include "sound.inc"
 
 SECTION "Sound",ROM0
 INIT_SOUND::
@@ -122,32 +121,4 @@ SOUND_3_HL::
 
 Section "Waveform RAM", ROM0[WAVERAM]
   dl $FFEDCA98, $8ABCDEFF, $001234567, $76532100
-
-Section "CH3 Data", ROM0[SOUNDROM]
-  ; CH3 data structure
-  ; length - 8b
-  ; frequency - 11b (lsb of 16b word)
-  db $70
-  dw $0706
-
-  db $70
-  dw $0721
-
-  db $73
-  dw $0739
-
-  db $70
-  dw $0744
-
-  db $70
-  dw $0759
-
-  db $70
-  dw $0768
-
-  db $70
-  dw $0778
-
-  db $70
-  dw $0783
 

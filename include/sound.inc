@@ -1,0 +1,5 @@
+; SOUND.INC
+; sound definitions
+
+WAVERAM EQU $0400
+SOUNDROM EQU $0300
