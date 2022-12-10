@@ -15,17 +15,19 @@ def scale(f):
     return int(round(0xF * f))
 
 
-def s(x):
+def sin_w(x):
     return sin(2 * pi * x)
 
-def c(x):
+def cos_w(x):
     return cos(2 * pi * x)
 
 def f(x):
     x_f = itof(x)
-    X = s(x_f)
+    X = ideal_func(x_f)
     return scale(0.5 * (1 + X))
 
+def ideal_func(x):
+    return sin_w(x) / (x+0.01)
 
 n = 8
 cache = []
@@ -37,10 +39,13 @@ for x in range(32):
         cache.append(f(x))
     else:
         total = f(x)
+
         for item in cache[::-1]:
             total = (total << 4) | item
+
         print(f"{total:#0{n+2}x}".replace("0x", "$").upper(),
               end=(", " if x < 31 else ""))
+
         cache = []
 
 print()

@@ -1,7 +1,7 @@
 ; SOUND.ASM
 ; audio subroutines
 
-include "sound.inc"
+INCLUDE "sound.inc"
 
 SECTION "Sound",ROM0
 INIT_SOUND::
@@ -120,5 +120,6 @@ SOUND_3_HL::
   
 
 Section "Waveform RAM", ROM0[WAVERAM]
-  dl $FFEDCA98, $8ABCDEFF, $001234567, $76532100
+  ;dl $FFEDCA98, $8ABCDEFF, $001234567, $76532100
+  dl $FFFFFFF8, $9CFFFFFF, $00000136, $76431000
 
