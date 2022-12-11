@@ -66,7 +66,7 @@ include "data/demo_music.inc"
 ; |
 ; +
 
-Section "C Major Scale", ROM0[_DEMO_DATA_START]
+Section "Demo Music", ROM0[_DEMO_DATA_START]
 DEMO_DATA::
   dw .ch1_data ; r16 - pointer to channel 1 data start
   dw .ch2_data ; r16 - pointer to channel 2 data start
@@ -82,43 +82,107 @@ DEMO_DATA::
 .ch3_data:
   db $01
   db $70
-  dw $0706
-  db $00
+  NOTE_E4
   
   db $01
   db $70
-  dw $0721
-  db $00
+  NOTE_D4
   
   db $01
   db $70
-  dw $0739
-  db $00
+  NOTE_C4
   
   db $01
   db $70
-  dw $0744
-  db $00
+  NOTE_D4
   
   db $01
   db $70
-  dw $0759
-  db $00
+  NOTE_E4
   
   db $01
   db $70
-  dw $0768
-  db $00
+  NOTE_E4
+  
+  db $01
+  db $30
+  NOTE_E4
   
   db $01
   db $70
-  dw $0778
-  db $00
+  NOTE_D4
+
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $30
+  NOTE_D4
+
+  db $01
+  db $70
+  NOTE_E4
+
+  db $01
+  db $70
+  NOTE_G4
+
+  db $01
+  db $30
+  NOTE_G4
   
   db $01
   db $70
-  dw $0783
-  db $00
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_D4
+  
+  db $01
+  db $70
+  NOTE_C4
+  
+  db $01
+  db $70
+  NOTE_D4
+  
+  db $01
+  db $70
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_E4
+
+  db $01
+  db $70
+  NOTE_E4
+
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $70
+  NOTE_E4
+
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $10
+  NOTE_C4
   
   db $02
   dw .ch3_data
