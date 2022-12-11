@@ -8,6 +8,7 @@ INCDIR := include
 BLDDIR := build
 OBJDIR := $(BLDDIR)/obj
 GB     := $(BLDDIR)/sound.gb
+SYM	   :=  $(GB:%.gb=%.sym)
 
 SRC := $(shell find $(SRCDIR) -name '*.asm' -print)
 OBJ := $(addprefix $(OBJDIR)/, $(SRC:$(SRCDIR)/%.asm=%.o))
@@ -19,12 +20,12 @@ OBJDIRS := $(dir $(OBJ))
 all: build
 
 build: $(OBJ)
-	$(LINKER) $(OBJ) -o $(GB)
+	$(LINKER) $(OBJ) -o $(GB) -n $(SYM)
 	$(FIX) -p0 -v $(GB)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.asm
 	@ mkdir -p $(OBJDIRS)
-	$(ASM) -i $(INCDIR) -o $@ $<
+	$(ASM) -E -i $(INCDIR) -o $@ $<
 
 clean:
 	@ $(RM) -r $(BLDDIR)/*

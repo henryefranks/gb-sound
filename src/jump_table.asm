@@ -19,6 +19,8 @@ JUMP_TABLE::
     ; > stack
     ;   * sp + 0 (r16) - table start addr
     ;
+    ; registers altered: a, d, e, hl
+    ;
 
     ; load [$00, a] into de and shift left to multiply by 2
     ld e, a

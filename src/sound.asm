@@ -2,6 +2,9 @@
 ; audio subroutines
 
 INCLUDE "sound.inc"
+INCLUDE "play_sound.inc"
+INCLUDE "data/demo_music.inc"
+INCLUDE "sound_registers.inc"
 
 SECTION "Sound",ROM0
 INIT_SOUND::
@@ -17,11 +20,11 @@ INIT_SOUND::
 LOAD_WAVEFORM_RAM::
   ; make sure CH3 is disabled before we load data
   ld a, $00
-  ldh [$FF1A], a
+  ldh [SOUND_CH3_DAC_EN], a
 
   ld hl, WAVERAM
 
-  ld de, $FF30
+  ld de, SOUND_CH3_WAVERAM_START
 
   REPT $10
     ld a, [hli]
@@ -31,95 +34,38 @@ LOAD_WAVEFORM_RAM::
 
   ; re-enable CH3
   ld a, $80
-  ldh [$FF1A], a
-
-  ret
-
-SOUND_1::
-  ld a, %00010110
-  ldh [$FF10], a
-
-  ld a, %10000000
-  ldh [$FF11], a
-
-  ld a, %01110000
-  ldh [$FF12], a
-
-  ld a, %00000000
-  ldh [$FF13], a
-
-  ld a, %11000011
-  ldh [$FF14], a
-
-  ret
-
-SOUND_2::
-  ld a, %10000000
-  ldh [$FF16], a
-
-  ld a, %01110000
-  ldh [$FF17], a
-
-  ld a, %00000000
-  ldh [$FF18], a
-
-  ld a, %11000011
-  ldh [$FF19], a
-
-  ret
-
-SOUND_3::
-  ld a, %10000000
-  ldh [$FF1A], a
-
-  ld a, %00000000
-  ldh [$FF1B], a
-
-  ld a, %00100000
-  ldh [$FF1C], a
-
-  ld a, %00000000
-  ldh [$FF1D], a
-
-  ld a, %11000110
-  ldh [$FF1E], a
+  ldh [SOUND_CH3_DAC_EN], a
 
   ret
 
 SOUND_3_INIT::
-  ld a, %10000000
-  ldh [$FF1A], a
+  ; set volume to 100%
   ld a, %00100000
-  ldh [$FF1C], a
+  ldh [SOUND_CH3_VOL], a
 
   call LOAD_WAVEFORM_RAM
-  
+
+  ; initialise our pointer to the start of the data
+  ld hl, CH3_PTR
+  ld a, [_DEMO_DATA_START + 5]
+  ld [hli], a
+  ld a, [_DEMO_DATA_START + 4]
+  ld [hl], a
+
   ret
 
-WAIT_FOR_CH3_FREE::
-  ldh a, [$FF26]
-  and $04
-  jp nz, WAIT_FOR_CH3_FREE
-  ret
 
-SOUND_3_HL::
-  ; take address in (hl) and play sound
-  ; corresponding to data stored in hl and hl+1
-  ;
-  ; leaves (hl) pointing to next table entry
-  ; i.e. hl+3
-
-  ld a, [hli]
-  ldh [$FF1B], a
-  ld a, [hli]
-  ldh [$FF1D], a
-  ld a, [hli]
-  or $C0
-  ldh [$FF1E], a
+PLAY_CH3_SOUND::
+  ; check if the channel's free (ie not currently playing)
+  ; if not, return
+  ldh a, [SOUND_ON_OFF]
+  and $04 ; bit 3
+  ret nz ; if channel is playing (bit is nonzero), return
+  ; the channel isn't playing, so let's play the next sound in the db
+  ld a, 2
+  call PROCESS_SOUND_OBJ
   ret
-  
 
 Section "Waveform RAM", ROM0[WAVERAM]
-  ;dl $FFEDCA98, $8ABCDEFF, $001234567, $76532100
-  dl $FFFFFFF8, $9CFFFFFF, $00000136, $76431000
+  dl $FFEDCA98, $8ABCDEFF, $001234567, $76532100
 
