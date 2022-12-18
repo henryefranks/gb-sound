@@ -10,12 +10,13 @@ START::
   ld sp, $FFFE               ; set the stack to $FFFE
 
 .setup
-  ld hl, DEMO_SONG
+  ld hl, LENGTH_TEST
+  call SETUP_AUDIO
   call LOAD_HEADER
 
 .loop
   call WAIT_VBLANK
-  call NEXT_NOTE_CH1
+  call NEXT_NOTE
   jr .loop
 
 WAIT_VBLANK:

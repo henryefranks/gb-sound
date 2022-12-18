@@ -26,3 +26,4 @@ SOUND_CH4_LEN               EQU $FF20
 SOUND_CH4_VOL               EQU $FF21
 SOUND_CH4_FREQ_RAND         EQU $FF22
 SOUND_CH4_CTRL              EQU $FF23
+            
