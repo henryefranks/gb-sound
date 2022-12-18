@@ -2,6 +2,9 @@
 ## GENERATE MACROS TO PRODUCE ALL NOTES IN C MAJOR ##
 #####################################################
 
+# example usage:
+# $ python3 scripts/generate_note_macros.py > include/data/notes.inc
+
 notes = "CDEFGAB"
 
 freq = [
@@ -16,7 +19,17 @@ freq = [
     [4186.01, 4698.63, 5274.04, 5587.65, 6271.93, 7040.00, 7902.13]  # C8
 ]
 
+note_table = []
+
+counter = 0
+empty_data_string = "  dw "
+
+print("; NOTE DATA (C MAJOR ONLY)")
+print()
+
 for i in range(9):
+    data = empty_data_string
+
     for j, note in enumerate(notes):
         f = freq[i][j]
         wavelen = int(2048 - (65536 / f))
@@ -24,9 +37,20 @@ for i in range(9):
         if not 0 <= wavelen <= 2048:
             continue
 
-        print(f"MACRO NOTE_{note + str(i)}")
-        print(f"  dw %00000{wavelen:011b}")
-        print( "  db $00")
-        print( "ENDM")
+        print(f"NOTE_{note + str(i)} EQU ${counter:02x}")
+
+        data += f"${wavelen:04x}"
+        if j < len(notes) - 1:
+            data += ", "
+
+        counter += 1
+
+    if data != empty_data_string:
+        note_table.append(data)
         print()
-    print()
+
+print('Section "NOTES", ROM0')
+print('note_table::')
+
+for line in note_table:
+    print(line)

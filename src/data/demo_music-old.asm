@@ -1,4 +1,4 @@
-include "data/notes.inc"
+include "data/demo_music.inc"
 
 ;  Demo sound file for audio engine
 ; ==================================
@@ -66,12 +66,12 @@ include "data/notes.inc"
 ; |
 ; +
 
-Section "MUSIC", ROM0
-DEMO_SONG::
-  dw .ch1_data                ; r16 - pointer to channel 1 data start
-  db (.ch2_data - .ch1_data)  ;  u8 - offset of ch2 data from ch1
-  db (.ch3_data - .ch1_data)  ;  u8 - offset of ch3 data from ch1
-  db (.ch4_data - .ch1_data)  ;  u8 - offset of ch4 data from ch1
+Section "Demo Music", ROM0[_DEMO_DATA_START]
+DEMO_DATA::
+  dw .ch1_data ; r16 - pointer to channel 1 data start
+  dw .ch2_data ; r16 - pointer to channel 2 data start
+  dw .ch3_data ; r16 - pointer to channel 3 data start
+  dw .ch4_data ; r16 - pointer to channel 4 data start
 
 .ch1_data:
   nop
@@ -80,7 +80,113 @@ DEMO_SONG::
   nop
 
 .ch3_data:
-  nop
+  db $01
+  db $70
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_D4
+  
+  db $01
+  db $70
+  NOTE_C4
+  
+  db $01
+  db $70
+  NOTE_D4
+  
+  db $01
+  db $70
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_E4
+  
+  db $01
+  db $30
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $30
+  NOTE_D4
+
+  db $01
+  db $70
+  NOTE_E4
+
+  db $01
+  db $70
+  NOTE_G4
+
+  db $01
+  db $30
+  NOTE_G4
+  
+  db $01
+  db $70
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_D4
+  
+  db $01
+  db $70
+  NOTE_C4
+  
+  db $01
+  db $70
+  NOTE_D4
+  
+  db $01
+  db $70
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_E4
+  
+  db $01
+  db $70
+  NOTE_E4
+
+  db $01
+  db $70
+  NOTE_E4
+
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $70
+  NOTE_E4
+
+  db $01
+  db $70
+  NOTE_D4
+
+  db $01
+  db $10
+  NOTE_C4
+  
+  db $02
+  dw .ch3_data
+  dw $0000
 
 .ch4_data:
   nop
