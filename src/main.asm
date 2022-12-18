@@ -1,7 +1,7 @@
 ; MAIN.ASM
 ; main code
 
-include "sound.inc"
+include "sound_registers.inc"
 
 ; --- Program Start ---
 SECTION "Program Start",ROM0[$0150]
@@ -9,12 +9,13 @@ START::
   di                         ; disable interrupts
   ld sp, $FFFE               ; set the stack to $FFFE
 
-  call INIT_SOUND
-  call SOUND_3_INIT
+.setup
+  ld hl, DEMO_SONG
+  call LOAD_HEADER
 
 .loop
   call WAIT_VBLANK
-  call PLAY_CH3_SOUND
+  call NEXT_NOTE_CH1
   jr .loop
 
 WAIT_VBLANK:
