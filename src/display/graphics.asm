@@ -81,6 +81,14 @@ LOAD_MAP::
 
     ret
 
+DISPLAY_TILE::
+    ; get screen coord
+    ld hl, _SCRN0
+    add hl, de
+    ld [hl], a
+
+    ret
+
 DISPLAY_CHAR::
     ; takes the 8-bit value in a and displays
     ; it in hex at the display coord de
@@ -100,32 +108,8 @@ DISPLAY_CHAR::
 
     ret
 
-DISPLAY_NIBBLE:
-    ; get screen coord
-    ld hl, _SCRN0
-    add hl, de
-
-    ; get tile
-    inc a ; our tiles are offset by 1 in VRAM
-    ld [hl], a
-
-    ret
-
-DEAD_BEEF::
-    ld de, $00
-    ld a,  $DE
-    call DISPLAY_CHAR
-
-    ld de, $02
-    ld a,  $AD
-    call DISPLAY_CHAR
-
-    ld de, $05
-    ld a,  $BE
-    call DISPLAY_CHAR
-
-    ld de, $07
-    ld a,  $EF
-    call DISPLAY_CHAR
-
+DISPLAY_NIBBLE::
+    ; account for offset of 0 character
+    add a, (HEX_TILES.hex - HEX_TILES) >> 4
+    call DISPLAY_TILE
     ret
