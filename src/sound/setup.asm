@@ -13,9 +13,9 @@ SETUP_AUDIO::
     ld a, $04
     ldh [SOUND_CH1_VOL_ENV], a
     ldh [SOUND_CH2_VOL_ENV], a
-    ld a, $F4
+    ld a, $F5
     ldh [SOUND_CH1_VOL_ENV], a
-    ld a, $F1
+    ld a, $F2
     ldh [SOUND_CH2_VOL_ENV], a
 
     ld a, $B0

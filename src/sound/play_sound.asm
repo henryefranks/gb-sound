@@ -4,10 +4,10 @@ INCLUDE "sound_registers.inc"
 Section "Audio Playback", ROM0
 NEXT_NOTE::
     ldh a, [SOUND_ON_OFF]
-
     bit 0, a ; check for channel 1 playing
     call z, NEXT_NOTE_CH1
-    
+
+    ldh a, [SOUND_ON_OFF]
     bit 1, a ; check for channel 2 playing
     call z, NEXT_NOTE_CH2
 
