@@ -1,6 +1,12 @@
 INCLUDE "display.inc"
 
 SECTION "GRAPHICS",ROM0
+WAIT_VBLANK::
+    ldh a,[$FF44]		  ; get current scanline
+    cp $91			      ; check if v-blank
+    jr nz, WAIT_VBLANK
+    ret
+
 SET_LDC_CFG::
     ldh [LCDC],a
     ret
@@ -24,7 +30,7 @@ CLEAR_OAM::
   
 
 CLEAR_MAP::
-    ld hl,_SCRN0    ; load bg map address ($9800)
+    ld hl, _SCRN0    ; load bg map address ($9800)
     ld bc, 32*32    ; 16 bit counter
 
 .loop:
@@ -72,5 +78,54 @@ LOAD_MAP::
     inc de
     dec c
     jr nz, .loop
+
+    ret
+
+DISPLAY_CHAR::
+    ; takes the 8-bit value in a and displays
+    ; it in hex at the display coord de
+
+    ld b, a ; keep a copy
+    and $F0
+    REPT 4
+        rr a
+    ENDR
+    call DISPLAY_NIBBLE
+
+    inc de
+
+    ld a, b ; retrieve saved copy
+    and $0F
+    call DISPLAY_NIBBLE
+
+    ret
+
+DISPLAY_NIBBLE:
+    ; get screen coord
+    ld hl, _SCRN0
+    add hl, de
+
+    ; get tile
+    inc a ; our tiles are offset by 1 in VRAM
+    ld [hl], a
+
+    ret
+
+DEAD_BEEF::
+    ld de, $00
+    ld a,  $DE
+    call DISPLAY_CHAR
+
+    ld de, $02
+    ld a,  $AD
+    call DISPLAY_CHAR
+
+    ld de, $05
+    ld a,  $BE
+    call DISPLAY_CHAR
+
+    ld de, $07
+    ld a,  $EF
+    call DISPLAY_CHAR
 
     ret

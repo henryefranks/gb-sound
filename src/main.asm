@@ -26,26 +26,22 @@ START::
   call CLEAR_MAP
 
   ld hl, HEX_TILES
-  ld c, 3
+  ld c, 17
   call LOAD_TILES
 
-  ld hl, TEST_MAP
-  ld c, 32 * 6
-  call LOAD_MAP
+  ; ld hl, TEST_MAP
+  ; ld c, 17
+  ; call LOAD_MAP
+
+  call DEAD_BEEF
 
   ld a, %11100100
   call SET_BACKGROUND_PALLETTE
 
-  ld a,%10010011
+  ld a, %10010011
   call SET_LDC_CFG
 
 .loop
   call WAIT_VBLANK
   call NEXT_NOTE
   jr .loop
-
-WAIT_VBLANK:
-  ldh a,[$FF44]		  ; get current scanline
-  cp $91			      ; check if v-blank
-  jr nz, WAIT_VBLANK
-  ret
